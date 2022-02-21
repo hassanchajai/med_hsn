@@ -4,19 +4,29 @@ const mongoose = require("mongoose");
 const reservationSchema = new mongoose.Schema({
     from: {
         type: Date,
-        required: true,
+        required: [true, "Please provide a from date"],
+        validate: {
+            validator: function (value) {
+                return value > new Date();
+            }
+        }
     },
     to: {
         type: Date,
         required: true,
+        validate: {
+            validator: function (value) {
+                return value > this.from;
+            }
+        }
     },
     ship: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'Ship',
         required: true,
     },
     quais: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'Quais',
         required: true,
     },
@@ -33,17 +43,7 @@ const reservationSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Paiment',
     }],
-
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-    },
-    status:{
-        type:String,
-        enum:["active","inactive"],
-        default:"active"
-    }    
+  
 },{timestamps:true});
 
 const Reservation = mongoose.model("Reservation", reservationSchema);

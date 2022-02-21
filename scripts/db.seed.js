@@ -1,6 +1,7 @@
 const { connectDB } = require("../config/db");
 const Place = require("../models/Place.model");
 const Port = require("../models/Port.model");
+const Quais = require("../models/Quais.model");
 const User = require("../models/userModel");
 // const User = require("../models/userModel");
 const random = (max = 50) => {
@@ -35,6 +36,15 @@ connectDB().then(async () => {
             port:port._id
         });
         await place.save()
+
+        const quais = new Quais({
+            x: i,
+            y: i,
+            zone: i >= 1 && i <= 200 && "A" || i >= 200 && i <= 400 && "B" || i >= 400 && i <= 600 && "C" || i >= 600 && i <= 800 && "D" || i >= 800 && i <= 1000 && "E",
+            port:port._id,
+             isReserved: false,
+        });
+        await quais.save()
     }
     console.log("database seed successfuly!");
     process.exit()

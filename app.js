@@ -3,7 +3,6 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
-const hpp = require('hpp');
 const cors = require('cors');
 
 const routes=require("./routes");
@@ -40,10 +39,6 @@ app.use(xss());
 if(process.env.NODE_ENVIROMMENT === 'development') {
     app.use(morgan('dev'));
 }
-// Prevent parameter pollution
-app.use(hpp());
-
-
 // Routes
 app.use('/', routes);
 

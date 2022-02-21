@@ -6,7 +6,7 @@ const model_name = process.argv[2]
 const model = model_name[0].toUpperCase() + model_name.split("").slice(1, model_name.length).join("");
 
 const template = `
-const ${model} = require("./${model}.model");
+const ${model} = require("../models/${model}.model");
 
 // get all ${model}s
 exports.get_all = function (req, res) {

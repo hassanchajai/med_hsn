@@ -2,10 +2,6 @@
 const mongoose = require("mongoose");
 
 const quaisSchema = new mongoose.Schema({
-    reference:{
-        type:String,
-        required:true,
-    },
     x:{
         type:Number,
         required:true,

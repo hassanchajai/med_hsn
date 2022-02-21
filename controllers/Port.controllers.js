@@ -2,7 +2,7 @@
 const Port = require("../models/Port.model");
 
 // get all products
-exports.get_all = function (req, res) {
+exports.get_all = function (req, res, next) {
   Port.find()
     .then((Ports) => {
       // Check if Ports exists
@@ -17,17 +17,15 @@ exports.get_all = function (req, res) {
           Ports: Ports,
         });
       }
-    }) 
+    })
     .catch(() =>
-      res.status(500).send({
-        status: false,
-        message: "Error while searching for Ports",
-      })
+      next(err)
+
     );
 };
 
 // // get one Port
-exports.get_one = function (req, res) {
+exports.get_one = function (req, res, next) {
 
   // Find account with matching id
   Port.findById(req.params.id)
@@ -44,16 +42,13 @@ exports.get_one = function (req, res) {
         });
       }
     })
-    .catch(() =>
-      res.status(500).send({
-        status: false,
-        message: "Error while searching for Port",
-      })
+    .catch((err) =>
+      next(err)
     );
 };
 
 // add a Port
-exports.add = async function (req, res) {
+exports.add = function (req, res, next) {
   let newPort = new Port(req.body);
   newPort
     .save()
@@ -65,17 +60,14 @@ exports.add = async function (req, res) {
       });
     })
     .catch((err) => {
-      return res.status(400).send({
-        status: false,
-        message: err,
-      });
+      next(err)
     });
 };
 
 // update a Port
-exports.update =async function (req, res) {
+exports.update = async function (req, res,next) {
 
-//   get the old proudct with id 
+  //   get the old proudct with id 
   const oldPort = await Port.findById(req.params.id);
   if (!oldPort) {
     return res.status(404).send({
@@ -83,12 +75,9 @@ exports.update =async function (req, res) {
       message: "cannot find the Port with id " + req.params.id,
     });
   }
-    oldPort.update( req.body, async (err, docs) => {
+  oldPort.update(req.body, async (err, docs) => {
     if (err) {
-      return res.status(200).send({
-        status: false,
-        message: err,
-      });
+    next(err)
     }
 
     return res.status(200).send({
@@ -99,7 +88,7 @@ exports.update =async function (req, res) {
 };
 
 // // delete a Port: change status to deleted
-exports.delete = function (req, res) {
+exports.delete = function (req, res,next) {
 
   // Find Port by id
   Port.findById(req.params.id)
@@ -120,10 +109,7 @@ exports.delete = function (req, res) {
             })
           )
           .catch(() =>
-            res.status(500).send({
-              status: false,
-              message: "error while saving changes to db",
-            })
+           next(err)
           );
       }
     })
@@ -136,4 +122,3 @@ exports.delete = function (req, res) {
 };
 
 
-  

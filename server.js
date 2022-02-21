@@ -15,7 +15,7 @@ const { connectDB } = require('./config/db');
 connectDB().then(() => {
     console.log('Connected to database');
     app.listen(port, () => {
-        console.log(`Application is running on port ${port}`);
+        console.log("\x1b[32m%s\x1b[0m",`Application is running on port ${port}`);
     });
 }).catch(err => {
     console.log(err.message || err);

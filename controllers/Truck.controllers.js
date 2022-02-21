@@ -2,7 +2,7 @@
 const Truck = require("../models/truckModel");
 
 // get all products
-exports.get_all = function (req, res) {
+exports.get_all = function (req, res,next) {
   Truck.find()
     .then((Trucks) => {
       // Check if Trucks exists
@@ -19,10 +19,7 @@ exports.get_all = function (req, res) {
       }
     }) 
     .catch(() =>
-      res.status(500).send({
-        status: false,
-        message: "Error while searching for Trucks",
-      })
+    next(err)
     );
 };
 
@@ -46,10 +43,7 @@ exports.get_one = function (req, res) {
       }
     })
     .catch(() =>
-      res.status(500).send({
-        status: false,
-        message: "Error while searching for Truck",
-      })
+    next(err)
     );
 };
 

@@ -2,7 +2,7 @@
 const Quais = require("../models/Quais.model");
 
 // get all products
-exports.get_all = function (req, res) {
+exports.get_all = function (req, res, next) {
   Quais.find()
     .then((Quaiss) => {
       // Check if Quaiss exists
@@ -17,12 +17,9 @@ exports.get_all = function (req, res) {
           Quaiss: Quaiss,
         });
       }
-    }) 
+    })
     .catch(() =>
-      res.status(500).send({
-        status: false,
-        message: "Error while searching for Quaiss",
-      })
+      next(err)
     );
 };
 
@@ -46,10 +43,7 @@ exports.get_one = function (req, res) {
       }
     })
     .catch(() =>
-      res.status(500).send({
-        status: false,
-        message: "Error while searching for Quais",
-      })
+     next(err)
     );
 };
 
@@ -66,17 +60,14 @@ exports.add = async function (req, res) {
       });
     })
     .catch((err) => {
-      return res.status(400).send({
-        status: false,
-        message: err,
-      });
+     next(err)
     });
 };
 
 // update a Quais
-exports.update =async function (req, res) {
+exports.update = async function (req, res) {
 
-//   get the old proudct with id 
+  //   get the old proudct with id 
   const oldQuais = await Quais.findById(req.params.id);
   if (!oldQuais) {
     return res.status(404).send({
@@ -84,12 +75,9 @@ exports.update =async function (req, res) {
       message: "cannot find the Quais with id " + req.params.id,
     });
   }
-    oldQuais.update( req.body, async (err, docs) => {
+  oldQuais.update(req.body, async (err, docs) => {
     if (err) {
-      return res.status(200).send({
-        status: false,
-        message: err,
-      });
+    next(err)
     }
 
     return res.status(200).send({
@@ -129,12 +117,8 @@ exports.delete = function (req, res) {
       }
     })
     .catch(() =>
-      res.status(500).send({
-        status: false,
-        message: "Error while searshing for Quais",
-      })
+    next(err)
     );
 };
 
 
-  
