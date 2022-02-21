@@ -8,6 +8,7 @@ const reservationRoutes = require('./reservationRoutes');
 const shipRoutes = require('./shipsRoutes');
 const truckRoutes = require('./truckRoutes');
 const categorieRoutes = require('./categorieRoutes');
+const { protect } = require('../../controllers/authController');
 
 router.get("/",(req,res)=>{
     return res.json({
@@ -16,12 +17,12 @@ router.get("/",(req,res)=>{
 });
 
 router.use("/users",userRoutes);
-router.use("/ports",portRoutes);
-router.use("/quais",quaisRoutes);
-router.use("/rdv",rdvRoutes);
-router.use("/reservations",reservationRoutes);
-router.use("/ships",shipRoutes);
-router.use("/trucks",truckRoutes);
-router.use("/categories",categorieRoutes);
+router.use("/ports",protect,portRoutes);
+router.use("/quais",protect,quaisRoutes);
+router.use("/rdv",protect,rdvRoutes);
+router.use("/reservations",protect,reservationRoutes);
+router.use("/ships",protect,shipRoutes);
+router.use("/trucks",protect,truckRoutes);
+router.use("/categories",protect,categorieRoutes);
 
 module.exports=router
